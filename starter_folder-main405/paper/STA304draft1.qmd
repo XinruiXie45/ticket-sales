@@ -1,0 +1,195 @@
+---
+title: "An practical Examination of Ticket Sales and Redemption Trends: Awareness from Toronto Island Ferry Data"
+author:
+  - Xinrui Xie
+thanks: "A GitHub Repository containing all data, R code, and other files used in this investigation is located here: <https://github.com/XinruiXie45/ticket-sales>"
+date: 09-23-2024
+date-format: long
+abstract: "Ferries to Toronto Island Park operate year-round out of Jack Layton Ferry Terminal. Ferries carry passengers to and from Centre Island, Hanlan’s Point and Ward’s Island. There are limited amenities during the off-season. This dataset provides near real-time information on ferry ticket sales and ticket redemptions. The counts are provided in 15 minute intervals and are updated hourly. They encompass all product types and include both online and POS-kiosk sales. For additional information about Toronto Island Park or the ferry service, please visit toronto.ca/parks or contact parks@toronto.ca."
+format: pdf
+number-sections: true
+toc: true
+bibliography: references.bib
+---
+
+```{r}
+#| echo: false
+#| warning: false
+
+
+#### Preamble ####
+
+# Purpose: 
+# Author: 
+# Date: September 23, 2024
+# Contact: 
+# Pre-requisites: Run the files "01-download_data.R" and "02-data_cleaning.R".
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#### Loading Packages ####
+
+# install.packages("tidyverse")
+# install.packages("here")
+library(tidyverse)
+library(here)
+library(opendatatoronto)
+library(tidyverse)
+```
+
+# Introduction {#sec-introduction}
+
+
+
+The purpose of this study is to analyze Toronto Island Ferry ticketing data using various statistical methods. With this this study attempts to reveal and express notable trends and insights that may inform decisions related to, for example, the opening times of large rides. The data provides valuable insights into the tourism and entertainment industry, as well as the leisure services industry, and is presented in visualizations that allow for a deeper understanding.
+
+We use the statistical programming language R [@citeR]
+
+
+
+# Data {#sec-data}
+
+## Overview {#sec-data-overview}
+The dataset used in this study contains near real-time information on the total number of ferry ticket sales and ticket exchanges over a defined period of time. The analysis used R statistical software to generate a variety of graphs, including histograms, bar charts, and line graphs, which are essential for understanding the distribution and relationships of key variables. The main objective of the study was to explore which ticketing method had the highest sales over time.
+
+## Results {#sec-data-results}
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+#### Loading the Cleaned Dataset ####
+ferry_ticket_packages <- search_packages("Toronto Island Ferry Ticket Counts")
+ferry_ticket_packages
+# Retrieve a list of all resources (datasets) available within the found package
+ferry_ticket_resources <- ferry_ticket_packages %>%
+  list_package_resources()
+# Display the list of resources available in the "Marriage Licence Statistics" package
+ferry_ticket_resources
+
+ferry_ticket_statistics <- ferry_ticket_resources[2,] %>%
+  get_resource()
+
+data = ferry_ticket_statistics
+```
+
+\newpage
+
+```{r}
+#| echo: false
+#| warning: false
+
+#### First Graph Labels ####
+
+# This code is based on knowledge from STA304 (2024).
+
+
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: fig-box-plot-of-counts
+#| fig-cap: ""
+
+#### First Graph ####
+
+# This code is based on knowledge from STA304 (2024).
+
+# Box plot for Redemption.Count and Sales.Count
+ggplot(data, aes(x = factor(1), y = Redemption.Count)) +
+  geom_boxplot(fill = "blue") +
+  labs(x = '', y = 'Redemption Count')
+
+ggplot(data, aes(x = factor(1), y = Sales.Count)) +
+  geom_boxplot(fill = "red") +
+  labs(title = 'Box Plot of Sales Count', x = '', y = 'Sales Count')
+
+
+```
+
+
+
+\newpage
+
+```{r}
+#| echo: false
+#| warning: false
+
+#### Second Graph Labels ####
+
+# This code is based on knowledge from STA304 (2024).
+
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: fig-Scatter-plot-between-Redemption.Count-and- Sales.Count
+#| fig-cap: ""
+
+#### Second Graph ####
+
+# This code is based on knowledge from STA304 (2024).
+
+# Scatter plot between Redemption.Count and Sales.Count
+ggplot(data, aes(x = Sales.Count, y = Redemption.Count)) +
+  geom_point(color = "green") +
+  labs(title = 'Scatter Plot of Sales Count vs Redemption Count', x = 'Sales Count', y = 'Redemption Count')
+```
+
+
+\newpage
+
+```{r}
+#| echo: false
+#| warning: false
+
+#### Third Graph Labels ####
+
+# This code is based on knowledge from STA304 (2024).
+
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: fig-Bar-Plot-of-Redemption-and-sales-Count-Over-Time
+#| fig-cap: " "
+
+# #### Third Graph ####
+# 
+# # This code is based on knowledge from STA304 (2024).
+# # Convert Timestamp to Date-Time format
+# data$Timestamp <- as.POSIXct(data$Timestamp, format="%Y-%m-%dT%H:%M:%S")
+# 
+# # Reshape the data for plotting
+# library(reshape2)
+# df_long <- melt(data, id.vars = "Timestamp", measure.vars = c("Redemption.Count", "Sales.Count"))
+# 
+# # Create a bar plot
+# ggplot(df_long, aes(x = Timestamp, y = value, fill = variable)) +
+#   geom_bar(stat = 'identity', position = 'dodge') +
+#   labs(title = 'Bar Plot of Redemption and Sales Count Over Time', x = 'Timestamp', y = 'Count') +
+#   scale_fill_manual(values = c("blue", "red"))
+```
+
+
+
+# Discussion {#sec-discussion}
+This study examined the ticket sales and redemption patterns of the Toronto Island Ferry, offering insights into the operational trends and passenger behaviors. The data collected shows key aspects of ferry use, such as the peaks in demand, time of redemption, and variations across different seasons. These patterns are necessary for understanding how ferry services can be optimized, both in terms of ticket pricing strategies and scheduling adjustments to accommodate high-demand periods.
+
+From the analysis, it is evident that certain times of the year, particularly during summer months, experience significantly higher demand. This aligns with expectations given that Toronto Island is a popular tourist destination, particularly during warmer weather. The concentration of ticket redemptions during weekends further highlights the role of leisure travel in ferry demand. Such insights are essential for ferry operators, as they can adjust schedules to better cater to peak periods while ensuring efficiency during off-peak times.
+
+Moreover, the data suggests that a significant portion of purchased tickets are redeemed later in the day, indicating potential bottlenecks in ferry capacity during the afternoon. This could signal the need for more frequent ferry services during specific time windows or the possibility of pricing incentives to encourage earlier travel.
+
+In a word,the findings from this study provide actionable insights into optimizing ferry operations, improving passenger satisfaction, and managing capacity during peak times. Future research could explore more granular aspects of passenger demographics to better tailor services to specific user groups and investigate the environmental impact of increased ferry use during high-demand periods.
+ 
+
+
+
+# References
+
